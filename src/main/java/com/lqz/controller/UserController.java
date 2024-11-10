@@ -24,7 +24,6 @@ public class UserController {
     @PostMapping("/save")
     @Operation(summary = "保存")
     public User save(@RequestBody User user) {
-        user.setCreateTime(new Date());
         userService.save(user);
         return user;
     }
