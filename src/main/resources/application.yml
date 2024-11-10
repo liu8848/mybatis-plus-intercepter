@@ -11,25 +11,25 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
-# springdoc-openapi项目配置
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-    enabled: true
-  group-configs:
-    - group: 'default'
-      paths-to-match: '/**'
-      packages-to-scan: com.lqz
-# knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true
-  setting:
-    language: zh_cn
-    enable-swagger-models: 实体列表
+  openapi:
+    title: mybatis-plus-自定义sql注入器
+    description: mybatis-plus-自定义sql注入器
+    email: sudalu929@outlook.com
+    concat: lqz
+    url: localhost:8001/doc.html
+    version: v4.0
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    group:
+      user:
+        group-name: user
+        api-rule: package
+        api-rule-resources:
+          - com.lqz.controller
+
 
 mybatis-plus:
   configuration:

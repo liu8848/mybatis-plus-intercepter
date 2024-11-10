@@ -10,13 +10,13 @@ import java.util.Date;
 public class AutoFillFieldHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
-        this.strictInsertFill(metaObject, "createName", String.class, "admin");
+        this.setFieldValByName("createTime", new Date(), metaObject);
+        this.setFieldValByName("createName","admin",metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.strictUpdateFill(metaObject, "modifyTime", Date.class, new Date());
-        this.strictInsertFill(metaObject, "modifyName", String.class, "admin");
+        this.setFieldValByName("modifyTime", new Date(), metaObject);
+        this.setFieldValByName("modifyName","admin",metaObject);
     }
 }

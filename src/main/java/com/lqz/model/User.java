@@ -2,17 +2,17 @@ package com.lqz.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-@Schema(name = "用户模型")
+@ApiModel("用户模型")
 @TableName("user")
 public class User {
 
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.ID_WORKER_STR)
     private String id;
 
     private String userName;
