@@ -9,7 +9,7 @@ spring:
     username: root
     password: sudalu929
     driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
+#    type: com.alibaba.druid.pool.DruidDataSource
 
 knife4j:
   enable: true
@@ -30,9 +30,9 @@ knife4j:
         api-rule-resources:
           - com.lqz.controller
 
-
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
-  mapper-locations: classpath:mapper/**/*.xml,classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml,classpath:mapper/*.xml
+
