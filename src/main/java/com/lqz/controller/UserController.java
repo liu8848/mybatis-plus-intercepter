@@ -31,4 +31,10 @@ public class UserController {
         userMapper.saveBatchsss(users,1000);
         return "success";
     }
+
+    @PostMapping("/insertOrUpdateBatch")
+    public String insertOrUpdateBatch(@RequestBody List<User> users) {
+        userMapper.saveOrUpdateBatchByUK(users,1000);
+        return "success";
+    }
 }

@@ -3,6 +3,7 @@ package com.lqz.injector;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.lqz.injector.interceptor.InsertBatchSomeColumn;
+import com.lqz.injector.interceptor.InsertOrUpdateBatchByUK;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class CustomSqlInjector extends DefaultSqlInjector {
         List<AbstractMethod> methodList = super.getMethodList(mapperClass);
         // 将批量插入方法添加进去，这个方法在下方会重写
         methodList.add(new InsertBatchSomeColumn());
+        methodList.add(new InsertOrUpdateBatchByUK());
         return methodList;
     }
 }
