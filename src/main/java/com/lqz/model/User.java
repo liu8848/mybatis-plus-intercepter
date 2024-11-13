@@ -15,7 +15,7 @@ public class User {
     @TableId(type = IdType.ID_WORKER_STR)
     private String id;
 
-    private String userName;
+    private String jobNo;
 
     private String name;
 

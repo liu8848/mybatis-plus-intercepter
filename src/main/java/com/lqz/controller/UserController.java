@@ -28,7 +28,8 @@ public class UserController {
 
     @PostMapping("/saveBatch")
     public String saveBath(@RequestBody List<User> users) {
-        userMapper.insertBatchSomeColumn(users);
+//        userMapper.insertBatchSomeColumn(users);
+        userMapper.saveBatchsss(users,1000);
         return "success";
     }
 }
