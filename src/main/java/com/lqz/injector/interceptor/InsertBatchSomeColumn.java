@@ -1,19 +1,27 @@
 package com.lqz.injector.interceptor;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.sql.SqlScriptUtils;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 增强版的批量插入，解决mp 中批量插入null 属性不能使用默认值的问题
@@ -47,20 +55,18 @@ public class InsertBatchSomeColumn extends AbstractMethod {
         String keyProperty = null;
         String keyColumn = null;
         // 表包含主键处理逻辑,如果不包含主键当普通字段处理
-//        if (tableInfo.havePK()) {
-//            if (tableInfo.getIdType() == IdType.AUTO) {
-//                /* 自增主键 */
-//                keyGenerator = new Jdbc3KeyGenerator();
-//                keyProperty = tableInfo.getKeyProperty();
-//                keyColumn = tableInfo.getKeyColumn();
-//            } else {
-//                if (null != tableInfo.getKeySequence()) {
-//                    keyGenerator = TableInfoHelper.genKeyGenerator(tableInfo,builderAssistant ,null, languageDriver);
-//                    keyProperty = tableInfo.getKeyProperty();
-//                    keyColumn = tableInfo.getKeyColumn();
-//                }
-//            }
-//        }
+        if (tableInfo.getIdType() == IdType.AUTO) {
+            /* 自增主键 */
+            keyGenerator = new Jdbc3KeyGenerator();
+            keyProperty = tableInfo.getKeyProperty();
+            keyColumn = tableInfo.getKeyColumn();
+        } else {
+            if (null != tableInfo.getKeySequence()) {
+                keyGenerator = TableInfoHelper.genKeyGenerator(tableInfo,builderAssistant ,null, languageDriver);
+                keyProperty = tableInfo.getKeyProperty();
+                keyColumn = tableInfo.getKeyColumn();
+            }
+        }
         String sql = String.format(sqlMethod.getSql(), tableInfo.getTableName(), columnScript, valuesScript);
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, modelClass);
         return this.addInsertMappedStatement(mapperClass, modelClass, getMethod(sqlMethod), sqlSource, keyGenerator,
@@ -85,11 +91,24 @@ public class InsertBatchSomeColumn extends AbstractMethod {
     private String getInsertSqlProperty(TableFieldInfo tableFieldInfo, final String prefix) {
         String newPrefix = prefix == null ? "" : prefix;
         String elPart = SqlScriptUtils.safeParam(newPrefix + tableFieldInfo.getEl());
+        //设置默认值
+        String value="default";
+        FieldFill fieldFill = tableFieldInfo.getFieldFill();
+        if(fieldFill.equals(FieldFill.INSERT)) {
+            Class<?> propertyType = tableFieldInfo.getPropertyType();
+            String property = tableFieldInfo.getProperty();
+            if (propertyType == Date.class) {
+                value = SINGLE_QUOTE + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + SINGLE_QUOTE;
+            } else if (propertyType == String.class) {
+                if (property.equals("createName")) {
+                    value = SINGLE_QUOTE + "admin" + SINGLE_QUOTE;
+                }
+            }
+        }
         //属性为空时使用默认值
-        String result =
-                SqlScriptUtils.convertIf(elPart, String.format("%s != null", newPrefix + tableFieldInfo.getEl()),
-                        false) + SqlScriptUtils.convertIf("default",
-                        String.format("%s == null", newPrefix + tableFieldInfo.getEl()), false);
+        String result= SqlScriptUtils.convertIf(elPart, String.format("%s != null", newPrefix + tableFieldInfo.getEl()), false)
+                + SqlScriptUtils.convertIf(value, String.format("%s == null", newPrefix + tableFieldInfo.getEl()), false);
+
         return result + ",";
     }
 
