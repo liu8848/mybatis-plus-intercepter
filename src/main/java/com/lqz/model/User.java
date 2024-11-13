@@ -19,7 +19,7 @@ public class User {
 
     private String name;
 
-    private int age;
+    private Integer age;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT)

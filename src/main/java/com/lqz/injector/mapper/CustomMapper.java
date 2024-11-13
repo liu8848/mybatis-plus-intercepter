@@ -1,6 +1,7 @@
 package com.lqz.injector.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ public interface CustomMapper<T> extends BaseMapper<T> {
     Integer insertBatchSomeColumn(Collection<T> entityList);
 
     Integer insertOrUpdateBatchByUK(Collection<T> entityList);
+
+    Integer updateSomeColumnById(@Param("et") T entity);
 
 
     @Transactional(rollbackFor = {Exception.class})
@@ -53,5 +56,4 @@ public interface CustomMapper<T> extends BaseMapper<T> {
             }
         }
     }
-
 }

@@ -37,4 +37,10 @@ public class UserController {
         userMapper.saveOrUpdateBatchByUK(users,1000);
         return "success";
     }
+
+    @PostMapping("/update")
+    public String update(@RequestBody User user) {
+        userMapper.updateSomeColumnById(user);
+        return "success";
+    }
 }
