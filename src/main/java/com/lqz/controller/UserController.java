@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -17,7 +19,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @PostMapping("/save")
     @ApiOperation(value = "保存")
@@ -28,19 +29,19 @@ public class UserController {
 
     @PostMapping("/saveBatch")
     public String saveBath(@RequestBody List<User> users) {
-        userMapper.saveBatchsss(users,1000);
+        userService.insertBatch(users);
         return "success";
     }
 
     @PostMapping("/insertOrUpdateBatch")
     public String insertOrUpdateBatch(@RequestBody List<User> users) {
-        userMapper.saveOrUpdateBatchByUK(users,1000);
+        userService.insertOrUpdateBatch(users);
         return "success";
     }
 
     @PostMapping("/update")
     public String update(@RequestBody User user) {
-        userMapper.updateSomeColumnById(user);
+        userService.updateEntityById(user, Collections.singletonList("age"));
         return "success";
     }
 }

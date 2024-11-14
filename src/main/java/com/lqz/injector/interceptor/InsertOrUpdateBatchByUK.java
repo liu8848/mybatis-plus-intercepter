@@ -15,8 +15,6 @@ import org.apache.ibatis.executor.keygen.NoKeyGenerator;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
@@ -92,7 +90,7 @@ public class InsertOrUpdateBatchByUK extends AbstractMethod {
             Class<?> propertyType = tableFieldInfo.getPropertyType();
             String property = tableFieldInfo.getProperty();
             if (propertyType == Date.class) {
-                value = SINGLE_QUOTE + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + SINGLE_QUOTE;
+                value="NOW()";
             } else if (propertyType == String.class) {
                 if (property.equals("createName")) {
                     value = SINGLE_QUOTE + "admin" + SINGLE_QUOTE;
@@ -115,7 +113,7 @@ public class InsertOrUpdateBatchByUK extends AbstractMethod {
             Class<?> propertyType = tableFieldInfo.getPropertyType();
             String property = tableFieldInfo.getProperty();
             if (propertyType == Date.class) {
-                 value = SINGLE_QUOTE + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + SINGLE_QUOTE;
+                value="NOW()";
             } else if (propertyType == String.class) {
                 if (property.equals("modifyName")) {
                     value = SINGLE_QUOTE + "admin" + SINGLE_QUOTE;

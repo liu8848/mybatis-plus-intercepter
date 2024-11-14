@@ -1,7 +1,7 @@
 package com.lqz.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.lqz.injector.service.CustomIService;
 import com.lqz.model.User;
 
-public interface UserService extends IService<User> {
+public interface UserService extends CustomIService<User> {
 }

@@ -98,7 +98,7 @@ public class InsertBatchSomeColumn extends AbstractMethod {
             Class<?> propertyType = tableFieldInfo.getPropertyType();
             String property = tableFieldInfo.getProperty();
             if (propertyType == Date.class) {
-                value = SINGLE_QUOTE + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + SINGLE_QUOTE;
+                value="NOW()";
             } else if (propertyType == String.class) {
                 if (property.equals("createName")) {
                     value = SINGLE_QUOTE + "admin" + SINGLE_QUOTE;
